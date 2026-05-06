@@ -1,0 +1,65 @@
+cabal-version: 3.14
+name: cabal-hooks-example
+version: 0.1.0.0
+synopsis: An example of using Cabal-hooks to pre-process an LBNF grammar
+description: An example of using Cabal-hooks to pre-process an LBNF grammar.
+license: BSD-3-Clause
+license-file: LICENSE
+author: Wen Kokke
+maintainer: wen@well-typed.com
+copyright: (c) 2026 Wen Kokke
+category: Language
+build-type: Hooks
+extra-doc-files: CHANGELOG.md
+
+custom-setup
+  setup-depends:
+    base,
+    Cabal,
+    Cabal-hooks,
+    filepath,
+
+library
+  hs-source-dirs: src
+  build-depends:
+    array,
+    base,
+    text,
+
+  build-tool-depends:
+    BNFC:bnfc,
+    alex:alex,
+    happy:happy,
+
+  exposed-modules:
+    Language.Prolog.Syntax
+
+  other-modules:
+    Language.Prolog.Syntax.Abs
+    Language.Prolog.Syntax.ErrM
+    Language.Prolog.Syntax.Lex
+    Language.Prolog.Syntax.Par
+    Language.Prolog.Syntax.Print
+    Language.Prolog.Syntax.Skel
+
+  autogen-modules:
+    Language.Prolog.Syntax.Abs
+    Language.Prolog.Syntax.ErrM
+    Language.Prolog.Syntax.Lex
+    Language.Prolog.Syntax.Par
+    Language.Prolog.Syntax.Print
+    Language.Prolog.Syntax.Skel
+
+  default-language: Haskell2010
+
+test-suite cabal-hooks-example-test
+  type: exitcode-stdio-1.0
+  hs-source-dirs: test
+  main-is: Main.hs
+  build-depends:
+    base,
+    cabal-hooks-example,
+    HUnit,
+    text,
+
+  default-language: Haskell2010
