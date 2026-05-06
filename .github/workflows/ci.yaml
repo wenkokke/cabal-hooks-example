@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v6
+
+      - name: 🛠️ Setup Haskell
+        id: setup-haskell
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc-version }}
+          cabal-version: ${{ matrix.cabal-version }}
+
+      - name: 🏗️ Build
+        run: cabal build
+
+      - name: 🚀 Test
+        run: cabal test
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - "ubuntu-latest"
+        ghc-version:
+          - "9.10.3"
+          - "9.12.4"
+          - "9.14.1"
+        cabal-version:
+          - "3.14.2.0"
+          - "3.16.1.0"
+        include:
+          - os: "macOS-latest"
+            ghc-version: "9.14.1"
+            cabal-version: "3.16.1.0"
+          - os: "windows-latest"
+            ghc-version: "9.14.1"
+            cabal-version: "3.16.1.0"
